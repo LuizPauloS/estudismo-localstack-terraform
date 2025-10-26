@@ -1,6 +1,4 @@
 provider "aws" {
-    access_key                      = "test"
-    secret_key                      = "test"
     region                          = "sa-east-1"
     s3_use_path_style               = true
     skip_credentials_validation     = true
