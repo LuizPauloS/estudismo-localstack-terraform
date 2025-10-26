@@ -9,19 +9,27 @@
 
 1. Inicie o LocalStack:
 
-```
+```bash
    docker run --rm -it -p 4566:4566 localstack/localstack
 ```
 
-2. Incie o Terraform:
+2. Gere o arquivo zipado da Lambda
 
+```bash
+    cd lambda/
+    zip -r ../function.zip .
+    cd ..
 ```
+
+3. Inicie o Terraform:
+
+```bash
    terraform init
 ```
 
 Resultado:
 
-```
+```bash
     Initializing the backend...
     Initializing provider plugins...
     - Reusing previous version of hashicorp/aws from the dependency lock file
@@ -38,27 +46,27 @@ Resultado:
     commands will detect it and remind you to do so if necessary.
 ```
 
-3. Valide o código Terraform
+4. Valide o código Terraform
 
-```
+```bash
     terraform validate
 ```
 
 Resultado:
 
-```
+```bash
     Success! The configuration is valid.
 ```
 
-4. Aplicar Terraform (Criar recursos)
+5. Aplicar Terraform (Criar recursos)
 
-```
+```bash
    terraform apply -auto-approve
 ```
 
 Resultado:
 
-```
+```bash
     Terraform detected the following changes made outside of Terraform since the last "terraform apply" which may have affected this plan:
 
     # aws_iam_role.lambda_role has been deleted
@@ -155,9 +163,9 @@ Resultado:
     Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ```
 
-5. Listar Lambdas Criadas
+6. Listar Lambdas Criadas
 
-```
+```bash
     aws lambda list-functions \
         --endpoint-url http://localhost:4566 \
         --profile <PROFILE_NAME>
@@ -165,7 +173,7 @@ Resultado:
 
 Resultado:
 
-```
+```bash
 {
     "Functions": [
         {
@@ -195,9 +203,9 @@ Resultado:
 }
 ```
 
-6. Invocar Lambda
+7. Invocar Lambda
 
-```
+```bash
     aws lambda invoke \
         --function-name lambda-test \
         --endpoint-url http://localhost:4566 \
@@ -207,15 +215,16 @@ Resultado:
 
 Resultado:
 
-```
+```bash
     {
         "StatusCode": 200,
         "ExecutedVersion": "$LATEST"
     }   
 ```
+8. Validar Resposta
 
-O arquivo de nome ***lambda-test-output.json*** deve ser criado na raiz do projeto com o seguinte json:
+* O arquivo de nome ***lambda-test-output.json*** deve ser criado na raiz do projeto com o seguinte json:
 
-```
+```bash
     {"statusCode": 200, "body": "Hello from Lambda!"}
 ```    
